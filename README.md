@@ -1,4 +1,3 @@
-# Jualan-Bakso
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -40,9 +39,9 @@
     header p.subtitle {
       margin-top: 0.25rem;
       font-size: 1.1rem;
+      font-style: italic;
       font-weight: 400;
       opacity: 0.85;
-      font-style: italic;
       text-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
     header p.description {
@@ -118,6 +117,28 @@
       letter-spacing: 0.05em;
       text-shadow: 0 1px 1px rgba(0,0,0,0.1);
     }
+    .quantity-label {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #d63031;
+      user-select: none;
+    }
+    input[type="number"] {
+      width: 70px;
+      padding: 0.3rem 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1.8px solid #d63031;
+      outline-offset: 2px;
+      text-align: center;
+      color: #2d3436;
+      transition: border-color 0.3s ease;
+    }
+    input[type="number"]:focus {
+      border-color: #e17055;
+      box-shadow: 0 0 6px rgba(225,112,85,0.5);
+    }
     .btn-order {
       background-color: #d63031;
       color: white;
@@ -134,6 +155,7 @@
       display: inline-block;
       box-shadow: 0 5px 15px rgba(214, 44, 45, 0.4);
       letter-spacing: 0.05em;
+      margin-top: 0.8rem;
     }
     .btn-order:hover {
       background-color: #e17055;
@@ -169,6 +191,9 @@
         font-size: 1rem;
         padding: 0.65rem 1rem;
       }
+      input[type="number"] {
+        width: 60px;
+      }
     }
   </style>
 </head>
@@ -180,29 +205,59 @@
   </header>
   <main>
     <div class="products" role="list">
-      <article class="product-card" role="listitem">
+      <article class="product-card" role="listitem" data-product-name="Bakso Keju" data-product-price="5000">
         <h2 class="product-title">Bakso Keju</h2>
         <p class="product-desc">Lezatnya bakso dengan kejunya yang meleleh di mulut. Cocok untuk pecinta rasa gurih dan creamy.</p>
         <p class="note-cheese">*Catatan: Keju yang digunakan adalah keju cheddar, bukan mozzarella.</p>
         <p class="product-price">Harga: 5.000 IDR</p>
-        <a href="https://wa.me/628871850109?text=Saya%20mau%20pesan%20Bakso%20Keju" class="btn-order" target="_blank" rel="noopener">Pesan via WhatsApp</a>
+        <label class="quantity-label" for="qty-bakso-keju">Jumlah Pesan:</label>
+        <input type="number" id="qty-bakso-keju" name="qty-bakso-keju" min="1" value="1" />
+        <button class="btn-order" data-product="Bakso Keju" data-price="5000" data-qty-input="qty-bakso-keju" type="button">Pesan via WhatsApp</button>
       </article>
-      <article class="product-card" role="listitem">
+      <article class="product-card" role="listitem" data-product-name="Bakso Urat Pedas" data-product-price="5000">
         <h2 class="product-title">Bakso Urat Pedas</h2>
         <p class="product-desc">Bakso urat dengan bumbu pedas menggigit, membuat sensasi makan jadi makin mantap dan nagih.</p>
         <p class="product-price">Harga: 5.000 IDR</p>
-        <a href="https://wa.me/628871850109?text=Saya%20mau%20pesan%20Bakso%20Urat%20Pedas" class="btn-order" target="_blank" rel="noopener">Pesan via WhatsApp</a>
+        <label class="quantity-label" for="qty-bakso-urat">Jumlah Pesan:</label>
+        <input type="number" id="qty-bakso-urat" name="qty-bakso-urat" min="1" value="1" />
+        <button class="btn-order" data-product="Bakso Urat Pedas" data-price="5000" data-qty-input="qty-bakso-urat" type="button">Pesan via WhatsApp</button>
       </article>
-      <article class="product-card" role="listitem">
+      <article class="product-card" role="listitem" data-product-name="Paket Bakso Pangsit" data-product-price="15000">
         <h2 class="product-title">Paket Bakso Pangsit</h2>
         <p class="product-desc">Paket komplit nikmat, berisi bakso dan pangsit yang siap memanjakan lidah kamu dalam satu genggaman.</p>
         <p class="product-price">Harga: 15.000 IDR</p>
-        <a href="https://wa.me/628871850109?text=Saya%20mau%20pesan%20Paket%20Bakso%20Pangsit" class="btn-order" target="_blank" rel="noopener">Pesan via WhatsApp</a>
+        <label class="quantity-label" for="qty-paket-bakso">Jumlah Pesan:</label>
+        <input type="number" id="qty-paket-bakso" name="qty-paket-bakso" min="1" value="1" />
+        <button class="btn-order" data-product="Paket Bakso Pangsit" data-price="15000" data-qty-input="qty-paket-bakso" type="button">Pesan via WhatsApp</button>
       </article>
     </div>
   </main>
   <footer>
     &copy; 2024 Bakso Dar Der Dor - Hubungi kami di WhatsApp: 0887 185 0109
   </footer>
+  <script>
+    document.querySelectorAll('.btn-order').forEach(button => {
+      button.addEventListener('click', () => {
+        const productName = button.getAttribute('data-product');
+        const price = button.getAttribute('data-price');
+        const qtyInputId = button.getAttribute('data-qty-input');
+        const qtyInput = document.getElementById(qtyInputId);
+        let qty = parseInt(qtyInput.value);
+        if (isNaN(qty) || qty < 1) {
+          alert('Jumlah pesan harus minimal 1.');
+          qtyInput.focus();
+          return;
+        }
+        const message = `Saya mau pesan ${qty} ${productName}${qty > 1 ? 's' : ''}`;
+        const waNumber = '628871850109';
+        const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
+        window.open(waUrl, '_blank');
+        setTimeout(() => {
+          alert('Terimakasih Sudah Mempercayai Toko Kami');
+        }, 500);
+      });
+    });
+  </script>
 </body>
 </html>
+

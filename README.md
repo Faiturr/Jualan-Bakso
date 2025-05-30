@@ -239,7 +239,6 @@
     document.querySelectorAll('.btn-order').forEach(button => {
       button.addEventListener('click', () => {
         const productName = button.getAttribute('data-product');
-        const price = button.getAttribute('data-price');
         const qtyInputId = button.getAttribute('data-qty-input');
         const qtyInput = document.getElementById(qtyInputId);
         let qty = parseInt(qtyInput.value);
@@ -252,12 +251,8 @@
         const waNumber = '628871850109';
         const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`;
         window.open(waUrl, '_blank');
-        setTimeout(() => {
-          alert('Terimakasih Sudah Mempercayai Toko Kami');
-        }, 500);
       });
     });
   </script>
 </body>
 </html>
-
